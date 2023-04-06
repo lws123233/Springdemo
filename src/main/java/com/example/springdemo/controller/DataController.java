@@ -41,6 +41,7 @@ public class DataController {
         String name = applicationContext.getEnvironment().getProperty("name");
         Integer i=-1;
 
+        applicationContext.getEnvironment().getProperty("interceptor.excludeUrl");
         List<String> collect = list.stream().filter(s -> null != s && !s.equals("")).collect(Collectors.toList());
         request.getMethod();
         Data data=dataservice.getData(date1.getId());

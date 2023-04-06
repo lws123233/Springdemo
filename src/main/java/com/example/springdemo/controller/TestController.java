@@ -37,4 +37,9 @@ public class TestController {
         new ExecutorUtil("executorTest");
         log.info("testExecutor-----------------End");
     }
+
+    @GetMapping("/interceptor/testInterceptor")
+    public void testInterceptor() {
+        log.info("testInterceptor-----------------start");
+    }
 }
