@@ -30,6 +30,7 @@ public class DataController {
     @Autowired
     ApplicationContext applicationContext;
 
+    @CheckNull
     @PostMapping("/getDatabyid")
     public Data getDataByid(@RequestBody Data date1, HttpServletRequest request){
 

@@ -1,6 +1,10 @@
 package com.example.springdemo.pojo;
 
-public class Data {
+import java.io.Serializable;
+
+public class Data implements Serializable {
+
+    private static final long serialVersionUID = -5518745916220905093L;
     private String id;
     private String name;
     private String price;

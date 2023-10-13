@@ -44,8 +44,8 @@ public class CheckNullAop {
         //获取方法参数对象列表（类型）
         Parameter[] parameters = method.getParameters();
         //前置处理器也可以执行方法，但其执行结果与目标方法的结果互不影响
-        Object invoke = method.invoke(target, parameterObjArray);
-        log.info(invoke.toString());
+       // Object invoke = method.invoke(target, parameterObjArray);
+       // log.info(invoke.toString());
 
         //参数列表对象
         for(Object parameterObj : parameterObjArray){
@@ -59,8 +59,8 @@ public class CheckNullAop {
             }
         }
 
-        Object invoke1 = method.invoke(target, parameterObjArray);
-        log.info(invoke1.toString());
+      //  Object invoke1 = method.invoke(target, parameterObjArray);
+       // log.info(invoke1.toString());
 
     }
 

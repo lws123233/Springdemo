@@ -8,9 +8,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
+@EnableFeignClients(basePackages = "com.example.springdemo.feign")
 @EnableConfigurationProperties
 @ConfigurationPropertiesScan(basePackages = "com.example.springdemo")
 @SpringBootApplication(scanBasePackages = "com.example.springdemo")

@@ -1,13 +1,22 @@
 package com.example.springdemo;
 
+import com.example.springdemo.pojo.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 @Slf4j
 @SpringBootTest
 class SpringdemoApplicationTests {
+
+    @Autowired
+    RedisTemplate redisTemplate;
+
 
     @Test
     void contextLoads() {
@@ -52,4 +61,18 @@ class SpringdemoApplicationTests {
     }
 
 
+    @Test
+    void reidsTest(){
+        Data data1=new Data("1","2","3","4");
+        Data data2=new Data("1a","2a","3a","4a");
+        Data data3=new Data("1b","2b","3b","4b");
+        List<Data> dataList=new ArrayList<>();
+        dataList.add(data1);
+        dataList.add(data2);
+        dataList.add(data3);
+        System.out.println(redisTemplate.opsForList().range("test",1,2));
+
+        redisTemplate.delete("test");
+
+    }
 }
