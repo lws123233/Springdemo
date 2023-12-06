@@ -13,10 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 @EnableFeignClients(basePackages = "com.example.springdemo.feign")
-@EnableConfigurationProperties
-@ConfigurationPropertiesScan(basePackages = "com.example.springdemo")
-@SpringBootApplication(scanBasePackages = "com.example.springdemo")
-@MapperScan("com.example.springdemo.Mapper")
+@SpringBootApplication
 public class SpringdemoApplication {
 
     public static void main(String[] args) throws InterruptedException {

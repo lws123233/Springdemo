@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 @Slf4j
@@ -63,6 +64,9 @@ class SpringdemoApplicationTests {
 
     @Test
     void reidsTest(){
+
+        int[] m=new int[2];
+
         Data data1=new Data("1","2","3","4");
         Data data2=new Data("1a","2a","3a","4a");
         Data data3=new Data("1b","2b","3b","4b");
@@ -70,9 +74,15 @@ class SpringdemoApplicationTests {
         dataList.add(data1);
         dataList.add(data2);
         dataList.add(data3);
-        System.out.println(redisTemplate.opsForList().range("test",1,2));
+//        System.out.println(redisTemplate.opsForList().range("test",1,2));
+//
+//        redisTemplate.delete("test");
+    }
 
-        redisTemplate.delete("test");
-
+    @Test
+    void testAdd(){
+        int[] a={1,3,2};
+        Arrays.sort(a);
+        System.out.println(a);
     }
 }
