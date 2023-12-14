@@ -1,7 +1,10 @@
 package com.example.springdemo.pojo;
 
 import lombok.Data;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -18,7 +21,9 @@ public class Student implements InitializingBean {
         return id;
     }
 
+    @Value("123")
     public void setId(String id) {
+        System.out.println("属性填充");
         this.id = id;
     }
 
