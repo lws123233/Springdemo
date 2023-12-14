@@ -20,7 +20,6 @@ import org.springframework.core.type.AnnotationMetadata;
  * 实现ImportSelector或者ImportBeanDefinitionRegistrar都行，这个为了演示都实现了，都实现会使ImportBeanDefinitionRegistrar失效
  * 实现FactoryBean接口则只能注入T类型的bean
  * 实现BeanDefinitionRegistryPostProcessor可以往beanDefinitionMap里添加bean，它属于beanFactoryPostProcess，先于beanFactoryPostProcess
- *
  */
 public class MyImportSelector implements ImportSelector, ImportBeanDefinitionRegistrar , FactoryBean<Student> , BeanDefinitionRegistryPostProcessor {
     @Override
