@@ -38,12 +38,12 @@ public class RedisConfig{
         return template;
     }
 
-    @Bean
-    @ConditionalOnMissingBean(StringRedisTemplate.class)
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        StringRedisTemplate template = new StringRedisTemplate();
-        template.setConnectionFactory(redisConnectionFactory);
-        return template;
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(StringRedisTemplate.class)
+//    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+//        StringRedisTemplate template = new StringRedisTemplate();
+//        template.setConnectionFactory(redisConnectionFactory);
+//        return template;
+//    }
 
 }
