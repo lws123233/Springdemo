@@ -2,6 +2,9 @@ package com.example.springdemo.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.springdemo.pojo.Data;
+import com.example.springdemo.service.DataService;
 import com.example.springdemo.util.ExecutorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -39,8 +42,11 @@ public class TestController {
     @Autowired
     @Value("${testname}")
     private String testname;
+    @Autowired
+    DataService dataservice;
 
-
+    @Autowired
+    BaseMapper<Data> baseMapper;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -51,6 +57,13 @@ public class TestController {
            log.info("测试2"+testname);
            Thread.sleep(5000);
 
+    }
+
+
+    @GetMapping("/tesMybatisInterceptor")
+    public void tesMybatisInterceptor() throws InterruptedException {
+        Data data = dataservice.getData("2");
+        System.out.println(data);
     }
 
     @GetMapping("/testExecutor")
