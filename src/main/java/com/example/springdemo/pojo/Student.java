@@ -10,10 +10,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+/**
+ * 这个生命周期展示还差Aware类接口，这类回调主要发生在属性填充后，before之前。也是用于给bean内部提供某些对象的
+ */
 
 @Lazy
 @Component
-public class Student implements InitializingBean {
+public class Student implements InitializingBean{
 
     String id;
 
