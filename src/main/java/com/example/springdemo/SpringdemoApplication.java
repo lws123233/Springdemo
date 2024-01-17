@@ -24,9 +24,9 @@ public class SpringdemoApplication {
     public static void main(String[] args) throws InterruptedException {
         //
         ConfigurableApplicationContext run = SpringApplication.run(SpringdemoApplication.class, args);
-        for (String beanDefinitionName : run.getBeanDefinitionNames()) {
-            System.out.println(beanDefinitionName);
-        }
+//        for (String beanDefinitionName : run.getBeanDefinitionNames()) {
+//            System.out.println(beanDefinitionName);
+//        }
         run.getBean(Student.class);
 
 
