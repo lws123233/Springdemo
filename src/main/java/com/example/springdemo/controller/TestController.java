@@ -16,6 +16,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -50,6 +54,12 @@ public class TestController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private ElasticsearchOperations elasticsearchOperations;
+
+    @Autowired
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+
     @GetMapping("/testRefresh")
     public void testRefresh() throws InterruptedException {
 
@@ -59,9 +69,15 @@ public class TestController {
 
     }
 
+    @GetMapping("/testES")
+    public void testES()  {
+        //创建索引
+        IndexOperations user = elasticsearchOperations.indexOps(IndexCoordinates.of("_User"));
+    }
+
 
     @GetMapping("/tesMybatisInterceptor")
-    public void tesMybatisInterceptor() throws InterruptedException {
+    public void tesMybatisInterceptor() {
         Data data = dataservice.getData("2");
         System.out.println(data);
     }

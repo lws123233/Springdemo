@@ -1,24 +1,44 @@
 package com.example.springdemo.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.springdemo.aop.CheckNull;
 import com.example.springdemo.config.MyConfiguration;
 import com.example.springdemo.pojo.Data;
 import com.example.springdemo.service.DataService;
 import io.netty.util.internal.StringUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 @RefreshScope
 @RestController
-@RequestMapping("/datarequest")
+@RequestMapping("/test")
 public class DataController {
 
 
@@ -28,11 +48,19 @@ public class DataController {
     @Value("${name}")
     private String name;
 
+    @Resource
+    ConfigurableApplicationContext context;
+
+    @Value("${lws.config.name}")
+    private String configName;
+
     @Autowired
     private MyConfiguration myConfiguration;
 
     @Autowired
     ApplicationContext applicationContext;
+
+    RestTemplate restTemplate=new RestTemplate();
 
     @CheckNull
     @PostMapping("/getDatabyid")
@@ -57,28 +85,187 @@ public class DataController {
         return data;
     }
 
+    @PostMapping("/getConfigName")
+    public ResponseEntity<String> getConfigName(@RequestBody Map map){
+         return restTemplate.exchange("http://otws19.zicp.vip:7062/cmdb/work/table!add"
+                , HttpMethod.POST
+                , new HttpEntity<>(JSONObject.toJSON(map))
+                , String.class);
+    }
 
-    public static void main(String[] args) {
-
-        Data data1 =FunctionTest.functionTest1.create("1");
-        Data data2 =FunctionTest.functionTest2.create("1");
-
-
-
-        String s="FEE_CODE";
-        System.out.println(s.toLowerCase());
+    @PostMapping("/publishEnvironmentChange")
+    public void publishEnvironmentChange(){
+        Set set=new HashSet<String>();
+        set.add("lws.config.name");
+//        context.publishEvent(new ApplicationEnvironmentPreparedEvent());
+    }
 
 
-        SortedSet sortedSet=new TreeSet();
-        ListNode head=new ListNode(4);
-        ListNode node1=new ListNode(2);
-        ListNode node2=new ListNode(1);
-        ListNode node3=new ListNode(3);
-        ListNode node4=new ListNode(6);
-        head.next=node1;
-        node1.next=node2;
-        node2.next=node3;
-        node3.next=node4;
+
+    @PostMapping("/readExcel")
+    public Map readExcel(@RequestParam(value = "file") MultipartFile multipartFile){
+        Workbook wb = null;
+        Map map=new HashMap<>();
+        //根据key构建sql
+
+        Map res=new HashMap<>();
+        int sucessCount=0;
+        String str="";
+        res.put("error",str);
+        try {
+            try {
+                wb = new HSSFWorkbook(new POIFSFileSystem(multipartFile.getInputStream()));
+            } catch (Exception e) {
+                wb = new XSSFWorkbook(multipartFile.getInputStream());        //XSSF不能读取Excel2003以前（包括2003）的版本
+            }
+
+            Sheet sheet = wb.getSheetAt(0);
+
+            if (sheet == null) {
+                return res;
+            }
+            Map map1=new HashMap<>();
+            map1.put("text","");
+            map1.put("extend","");
+            Map maphead=new HashMap<>();
+            maphead.put("cmd",10000);
+            maphead.put("ver","1.0");
+            maphead.put("token","d7140cd0-693d-401c-ace6-763a80ebc42b");
+            Map req=new HashMap<>();
+            //获得当前sheet的开始行
+            int firstRowNum = sheet.getFirstRowNum();
+            //获得当前sheet的结束行
+            int lastRowNum = sheet.getLastRowNum();
+
+            map.put("0d51a95d-7955-483d-8086-d84250fa5aea","");
+            map.put("6af5144c-11b3-43f9-b13a-ea146bccdfce","");
+
+            map.put("3213a33d-0f50-4166-ba86-cfd4aa04194b","");
+            map.put("da3fe01d-ab0a-4379-89d9-c4bb76ef28d6","");
+            map.put("7a889d2a-61a3-48cb-8f9b-74c590786222","");
+            map.put("e6045e3b-1af5-4caa-92ed-d88c3511db74","");
+            map.put("1d382ba4-040c-473c-b60c-643b91651fb9",map1);
+            map.put("cf7be03b-e526-4e9b-9007-05755e62086e","");
+            map.put("a43fa2d0-c744-48e4-a359-8599fbab0fe6",map1);
+            map.put("9044b7f5-6fde-4926-85fe-c9ac22e09b5c",map1);
+            map.put("fcd29de0-c9fc-48b6-8699-fa433db779bc",map1);
+            map.put("b42197f1-26c6-4cd2-b4c0-dada5b191b03",map1);
+            map.put("9eb8bb58-e11a-40da-9a9c-01996b9ed5b3",map1);
+            map.put("14af773a-a07b-44f3-940a-6afd20a1cc44","");
+            map.put("963e227e-a89f-43bf-a0c6-cd3b00735f06","");
+            map.put("f4a29b58-2981-42ad-9005-1c78b2a36ca0",map1);
+            map.put("4c523156-9d54-487e-bcc2-40ff31ea9596","");
+
+
+
+            Map conMap=new HashMap<>();
+            conMap.put("category_id",1255);
+            req.put("con",conMap);
+            req.put("head",maphead);
+
+            //循环除了第一行的所有行
+            for (int rowNum = firstRowNum+1; rowNum <= lastRowNum; rowNum++) {
+                //获得当前行
+                Row row = sheet.getRow(rowNum);
+                if (row == null
+                ) {
+                    return res;
+                }
+
+                if(rowNum>=300){
+                    map.put("9289d62e-b533-4c0d-9874-aae0fc8598c8", row.getCell(1).getStringCellValue());
+                    map.put("effda073-7b7f-40fc-8b58-a28b0b71ccea","遗迹");
+                    map.put("13dce3b2-6df7-417d-aa66-5b2fd702941a",row.getCell(3).getStringCellValue());
+                    map.put("b7727a27-79ac-4157-a90f-e49109af0cac","");
+                    map.put("c9502bcc-adb6-40ae-a86b-7b5ad5d0f18c","");
+                    if( row.getCell(2).getStringCellValue().contains("s")){
+                        map.put("c9502bcc-adb6-40ae-a86b-7b5ad5d0f18c",row.getCell(2).getStringCellValue());
+                    }else if(row.getCell(2).getStringCellValue().contains("未知")){
+
+                    }else{
+                        map.put("b7727a27-79ac-4157-a90f-e49109af0cac",row.getCell(2).getStringCellValue());
+                    }
+
+                    map.put("597a50d6-54c9-4b13-978b-7ee52c31f343","中国");
+                    map.put("764ae3e1-40ff-4e0c-b1a7-78d125792333","上海");
+                    map.put("022f11d2-a099-4d43-9c0f-0cb432f546ec","上海");
+                    map.put("b41a27e2-a88b-480f-9393-20d2251eceda",row.getCell(4).getStringCellValue());
+                    map.put("f55d7f82-5906-4b19-80ba-161a0bcf833d",row.getCell(5).getStringCellValue().substring(6));
+                    map.put("de50721c-0ff6-4e7e-9c25-70cc852a5028",row.getCell(5).getStringCellValue());
+
+                    conMap.put("map",map);
+                    ResponseEntity<String> exchange = restTemplate.exchange("http://otws19.zicp.vip:7062/cmdb/work/table!add"
+                            , HttpMethod.POST
+                            , new HttpEntity<>(JSONObject.toJSON(req))
+                            , String.class);
+                    if(exchange.getStatusCode().equals(HttpStatus.OK)){
+                        sucessCount++;
+                        res.put("count",sucessCount);
+                    }else{
+                        res.put("error",res.get("error")+""+row);
+                    }
+                }
+
+            }
+            return res;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                wb.close();
+                multipartFile.getInputStream().close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+
+        String te="";
+        System.out.println(te.length());
+        String str="上海,上海人,上海男人,上海人民,上海区,上海市,上海市人民政府";
+        str.substring(1,2);
+        List a=new ArrayList<>();
+        a.remove(a.size()-1);
+
+          Trie trie=new Trie();
+//          for(String s : str.split(",")){
+//              trie.insert(s);
+//          }
+//
+//        Scanner scanner=new Scanner(System.in);
+//        System.out.println(trie.searchPre(scanner.nextLine()));
+
+
+//        String key="上海市静安区光复路195号";
+//
+//
+//
+//        FunctionTest.choose.create(key);
+//
+//        String substring = key.substring(6);
+//
+//        System.out.println(substring);
+//
+//        String s="FEE_CODE";
+//        System.out.println(s.toLowerCase());
+//
+//
+//        SortedSet sortedSet=new TreeSet();
+//        ListNode head=new ListNode(4);
+//        ListNode node1=new ListNode(2);
+//        ListNode node2=new ListNode(1);
+//        ListNode node3=new ListNode(3);
+//        ListNode node4=new ListNode(6);
+//        head.next=node1;
+//        node1.next=node2;
+//        node2.next=node3;
+//        node3.next=node4;
         //LRU
         //doTest6();
 
